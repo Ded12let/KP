@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Личный кабинет — Дымооок</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            background: #181a1b;
+            position: relative;
+            overflow-x: hidden;
+            /* background-image: url('/smoke.jpg'); */
+            /* background-size: cover; */
+            /* background-position: center; */
+            /* background-attachment: fixed; */
+        }
+        .header {
+            width: 100vw;
+            padding: 36px 0 0 0;
+            text-align: center;
+            font-family: 'Segoe Script', cursive;
+            font-size: 2.3rem;
+            color: #fff;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.18);
+        }
+        .user-block {
+            background: rgba(34, 49, 63, 0.92);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+            padding: 40px 36px 32px 36px;
+            max-width: 500px;
+            margin: 48px auto 0 auto;
+            color: #fff;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .user-name {
+            font-size: 1.4rem;
+            color: #27ae60;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .btn-main {
+            font-size: 1.15rem;
+            padding: 15px 0;
+            border-radius: 18px;
+            width: 220px;
+            margin-bottom: 18px;
+            border: none;
+            box-shadow: 0 4px 18px 0 rgba(39,174,96,0.10);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+        }
+        .btn-main.btn-primary {
+            background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+            color: #fff;
+            font-weight: 700;
+        }
+        .btn-main.btn-primary:hover {
+            background: linear-gradient(90deg, #219150 0%, #27ae60 100%);
+            color: #fff;
+            box-shadow: 0 6px 24px 0 rgba(39,174,96,0.18);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .btn-main.btn-outline {
+            background: linear-gradient(90deg, #232526 0%, #414345 100%);
+            color: #27ae60;
+            border: 2px solid #27ae60;
+            font-weight: 700;
+        }
+        .btn-main.btn-outline:hover {
+            background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+            color: #fff;
+            box-shadow: 0 6px 24px 0 rgba(39,174,96,0.18);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .success-message {
+            color: #2ecc71;
+            font-weight: 600;
+            margin-top: 18px;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: 600;
+            margin-top: 18px;
+        }
+        .footer {
+            width: 100vw;
+            background: rgba(34,49,63,0.97);
+            color: #fff;
+            text-align: center;
+            padding: 24px 0 12px 0;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 3;
+            margin-top: 60px;
+        }
+        .footer .footer-title {
+            font-weight: 600;
+            color: #27ae60;
+            font-size: 1.1rem;
+        }
+        .footer .footer-contacts {
+            margin: 8px 0 0 0;
+            font-size: 1rem;
+        }
+        .footer .footer-time {
+            margin-top: 8px;
+            color: #b2dfdb;
+            font-size: 0.98rem;
+        }
+        @media (max-width: 600px) {
+            .header { font-size: 1.2rem; padding-top: 18px; }
+            .user-block { padding: 18px 4px; max-width: 98vw; }
+            .btn-main { width: 100px; font-size: 0.95rem; }
+        }
+        .btn-logout-top button {
+            background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%) !important;
+            color: #fff !important;
+            border: none;
+            font-weight: 700;
+            box-shadow: 0 2px 8px 0 rgba(231,76,60,0.10);
+            transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+        }
+        .btn-logout-top button:hover {
+            background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%) !important;
+            color: #fff !important;
+            box-shadow: 0 4px 16px 0 rgba(231,76,60,0.18);
+            transform: translateY(-2px) scale(1.04);
+        }
+        .btn-history-top button:hover {
+            background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%) !important;
+            color: #fff !important;
+            border-color: #27ae60 !important;
+            box-shadow: 0 4px 16px 0 rgba(39,174,96,0.18);
+            transform: translateY(-2px) scale(1.04);
+        }
+        .booking-card {
+            background: #232526;
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            color: #fff;
+            box-shadow: 0 2px 8px 0 rgba(39,174,96,0.08);
+            font-size: 1.04rem;
+        }
+        .side-img {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .side-img-left {
+            left: 32px;
+        }
+        .side-img-right {
+            right: 32px;
+        }
+        .side-img img {
+            height: 800px;
+            border-radius: 32px;
+            box-shadow: 0 12px 48px 0 rgba(0,0,0,0.18);
+            opacity: 0.55;
+            user-select: none;
+        }
+        @media (max-width: 1200px) {
+            .side-img img { height: 500px; }
+        }
+        @media (max-width: 900px) {
+            .side-img { display: none !important; }
+        }
+        @keyframes bounce-arrow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+    </style>
+</head>
+<body>
+<div class="side-img side-img-left d-none d-md-block">
+    <img src="/kalik.png" alt="Кальян слева">
+</div>
+<div class="side-img side-img-right d-none d-md-block">
+    <img src="/man.png" alt="Кальян справа">
+</div>
+<a href="/logout" class="btn-logout-top" style="position: absolute; top: 32px; right: 48px; z-index: 10; text-decoration: none;">
+    <button class="btn btn-danger" style="font-weight:700; font-size:1.08rem; border-radius:12px; padding:8px 22px;">Выйти</button>
+</a>
+<a href="/user/history" class="btn-history-top" style="position: absolute; top: 32px; right: 180px; z-index: 10; text-decoration: none;">
+    <button class="btn btn-outline-light" style="font-weight:700; font-size:1.08rem; border-radius:12px; padding:8px 22px; border:2px solid #27ae60; color:#27ae60; background:linear-gradient(90deg,#232526 0%,#414345 100%); transition:background 0.2s, color 0.2s;">История бронирований</button>
+</a>
+<div class="header">Дымооок</div>
+<div class="promo-block" style="max-width:700px;margin:32px auto 18px auto;padding:0 0 18px 0;text-align:center;color:#fff;">
+    <h2 style="color:#fff;font-size:1.45rem;font-family:'Segoe Script',cursive;font-weight:700;margin-bottom:10px;">Погрузись в атмосферу Дымооок!</h2>
+    <p style="font-size:1.13rem;color:#b2dfdb;margin-bottom:8px;">Уютные залы, мягкий свет, ароматные кальяны и дружелюбная команда ждут тебя каждый день! Только у нас — эксклюзивные авторские миксы, PlayStation для компании, настольные игры.</p>
+    <p style="font-size:1.08rem;color:#b2dfdb;">Забронируй стол онлайн и получи <span style='color:#27ae60;font-weight:600;'>скидку 10%</span> на первый кальян! Следи за нашими новостями в <a href="https://vk.com/" style="color:#27ae60;text-decoration:underline;">ВКонтакте</a>.</p>
+    <p style="font-size:1.08rem;color:#b2dfdb;">Дымооок — место, куда хочется возвращаться!</p>
+    <p style="font-size:1.13rem;color:#b2dfdb;margin-top:8px;">Забронируй сейчас и создай свой собственный кальян из разных вкусов!</p>
+</div>
+<div class="user-block">
+    <div class="d-flex flex-column align-items-center" style="gap:0; margin-bottom:18px;">
+        <div class="arrow-down" style="margin-bottom:2px;"><span style="font-size:2.2em; color:#27ae60; display:inline-block; animation:bounce-arrow 1.2s infinite;">↓</span></div>
+        <div class="d-flex flex-row justify-content-center align-items-center" style="gap:18px;">
+            <a href="/user/booking" class="btn btn-main btn-primary">Забронировать стол</a>
+        </div>
+    </div>
+    <div th:if="${param.success}" class="success-message">✅ Бронирование успешно создано!</div>
+    <div th:if="${param.error}" class="error-message">❌ Произошла ошибка при бронировании.</div>
+
+    <div class="booking-section mt-4">
+        <h3 class="booking-title">Предстоящие бронирования</h3>
+        <div th:if="${#lists.isEmpty(upcomingBookings)}" style="color:#b2dfdb;">Нет предстоящих бронирований.</div>
+        <div th:each="booking : ${upcomingBookings}" class="booking-card mb-3">
+            <div><b>Стол:</b> <span th:text="${booking.hallTable != null ? booking.hallTable.tableNumber : '—'}"></span></div>
+            <div><b>Время:</b> <span th:text="${#temporals.format(booking.startTime, 'dd.MM.yyyy HH:mm')} + ' — ' + ${#temporals.format(booking.endTime, 'HH:mm')}"></span></div>
+            <div><b>Кальяны:</b>
+                <ul th:if="${!#lists.isEmpty(booking.hookahs)}">
+                    <li th:each="hookah : ${booking.hookahs}">
+                        <span th:text="${hookah.base}"></span>, <span th:text="${hookah.strength}"></span>, <span th:text="${hookah.bowl}"></span>, <span th:text="${hookah.coal}"></span>
+                        <span th:if="${!#lists.isEmpty(hookah.flavors)}">, Вкусы: <span th:each="flavor : ${hookah.flavors}" th:text="${flavor.name}">Ягоды</span></span>
+                        <span th:if="${!#lists.isEmpty(hookah.additives)}">, Добавки: <span th:each="a : ${hookah.additives}" th:text="${a.name + ' '}"></span></span>
+                    </li>
+                </ul>
+                <span th:if="${#lists.isEmpty(booking.hookahs)}">—</span>
+            </div>
+            <form th:action="@{'/user/bookings/delete/' + ${booking.id}}" method="post" style="margin-top:10px;">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Удалить это бронирование?');">Удалить</button>
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="footer mt-5">
+    <div class="footer-title">Дымооок — Екатеринбург</div>
+    <div class="footer-contacts">
+        <span>+7 (900) 000-00-00</span> &nbsp;|&nbsp; <span>ул. Примерная, 1</span> &nbsp;|&nbsp; <a href="https://vk.com/" style="color:#27ae60;text-decoration:underline;">ВКонтакте</a>
+    </div>
+    <div class="footer-time">Работаем: 12:00 — 00:00</div>
+</footer>
+</body>
+</html>
