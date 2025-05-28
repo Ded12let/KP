@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Выбор времени — Дымооок</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            background: #181a1b;
+            position: relative;
+            overflow-x: hidden;
+            background-image: url('/smoke.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .header {
+            width: 100vw;
+            padding: 36px 0 0 0;
+            text-align: center;
+            font-family: 'Segoe Script', cursive;
+            font-size: 2.3rem;
+            color: #fff;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.18);
+        }
+        .booking-block {
+            background: rgba(34, 49, 63, 0.92);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+            padding: 40px 36px 32px 36px;
+            max-width: 420px;
+            margin: 48px auto 0 auto;
+            color: #fff;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .booking-title {
+            font-size: 1.4rem;
+            color: #27ae60;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            text-align: left;
+            color: #b2dfdb;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        select {
+            width: 100%;
+            padding: 12px 10px;
+            margin-bottom: 18px;
+            border: 1.5px solid #27ae60;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #232526;
+            color: #fff;
+            transition: border-color 0.3s;
+        }
+        select:focus {
+            border-color: #2ecc71;
+            outline: none;
+        }
+        .btn-main {
+            font-size: 1.15rem;
+            padding: 15px 0;
+            border-radius: 18px;
+            width: 100%;
+            margin-bottom: 18px;
+            border: none;
+            box-shadow: 0 4px 18px 0 rgba(39,174,96,0.10);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+        }
+        .btn-main.btn-primary {
+            background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+            color: #fff;
+            font-weight: 700;
+        }
+        .btn-main.btn-primary:hover {
+            background: linear-gradient(90deg, #219150 0%, #27ae60 100%);
+            color: #fff;
+            box-shadow: 0 6px 24px 0 rgba(39,174,96,0.18);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .btn-main.btn-outline {
+            background: linear-gradient(90deg, #232526 0%, #414345 100%);
+            color: #27ae60;
+            border: 2px solid #27ae60;
+            font-weight: 700;
+        }
+        .btn-main.btn-outline:hover {
+            background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+            color: #fff;
+            box-shadow: 0 6px 24px 0 rgba(39,174,96,0.18);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .footer {
+            width: 100vw;
+            background: rgba(34,49,63,0.97);
+            color: #fff;
+            text-align: center;
+            padding: 24px 0 12px 0;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            z-index: 10;
+            margin-top: 0;
+        }
+        .footer .footer-title {
+            font-weight: 600;
+            color: #27ae60;
+            font-size: 1.1rem;
+        }
+        .footer .footer-contacts {
+            margin: 8px 0 0 0;
+            font-size: 1rem;
+        }
+        .footer .footer-time {
+            margin-top: 8px;
+            color: #b2dfdb;
+            font-size: 0.98rem;
+        }
+        @media (max-width: 600px) {
+            .header { font-size: 1.2rem; padding-top: 18px; }
+            .booking-block { padding: 18px 4px; max-width: 98vw; }
+            .btn-main { width: 100px; font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="header">Дымооок</div>
+<div class="booking-block">
+    <div class="booking-title">Выбор времени</div>
+    <form action="/booking/tables" method="post">
+        <input type="hidden" name="selectedDate" th:value="${selectedDate}" />
+        <label for="startTime">Начало (часы):</label>
+        <select id="startTime" name="startHour" onchange="updateEndTimeOptions()" required>
+            <option value="">-- Выберите --</option>
+            <th:block th:each="h : ${#numbers.sequence(12, 23)}">
+                <option th:value="${h}" th:text="${h + ':00'}"></option>
+            </th:block>
+        </select>
+        <label for="endTime">Конец (часы):</label>
+        <select id="endTime" name="endHour" required>
+            <option value="">-- Сначала выберите начало --</option>
+        </select>
+        <button type="submit" class="btn btn-main btn-primary">Далее</button>
+    </form>
+    <a href="/booking/date" class="btn btn-main btn-outline mt-3">Назад</a>
+</div>
+<footer class="footer mt-5">
+    <div class="footer-title">Дымооок — Екатеринбург</div>
+    <div class="footer-contacts">
+        <span>+7 (900) 000-00-00</span> &nbsp;|&nbsp; <span>ул. Примерная, 1</span> &nbsp;|&nbsp; <a href="https://vk.com/" style="color:#27ae60;text-decoration:underline;">ВКонтакте</a>
+    </div>
+    <div class="footer-time">Работаем: 12:00 — 00:00</div>
+</footer>
+<script>
+    function updateEndTimeOptions() {
+        const startSelect = document.getElementById('startTime');
+        const endSelect = document.getElementById('endTime');
+        const selectedHour = parseInt(startSelect.value);
+        endSelect.innerHTML = '';
+        // Последний слот — 23:00, заведение работает до 00:00
+        for (let h = selectedHour + 1; h <= 24; h++) {
+            if (h <= 23) {
+                const option = document.createElement('option');
+                option.value = h;
+                option.text = h + ':00';
+                endSelect.appendChild(option);
+            } else if (h === 24) {
+                const option = document.createElement('option');
+                option.value = 0;
+                option.text = '00:00';
+                endSelect.appendChild(option);
+            }
+        }
+    }
+</script>
+</body>
+</html>
